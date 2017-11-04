@@ -8,29 +8,18 @@ const createAnagramsFromIdOfInput = inputId => {
 
     const _anagrams = _anagrams_map.map((anagram, a_i) => {
         if ( anagram.length === 1 ) { return; }
-        let other = '';
+        let anagram_string = '';
         const match = _anagrams_string_sorted_map[a_i];
-        const isAnagram = Utils.stringSortedContainsCharacters(match);
         _anagrams_string_sorted_map.forEach((sorted_anagram, s_a_i) => {
             // If the same anagram. No use to check if anagram of itself
             if (s_a_i === a_i) { return; }
-            // There should be no anagrams if the anagram we are trying to match is shorter
-            if (anagram.length > sorted_anagram.length) { return; }
-            
-            if ( isAnagram(sorted_anagram) ) {
-                /** Check if characters in anagram are the same order. If same order its the same anagram so return  */
-                if (Utils.matchStringForCharactersInSameOrder(anagram)(_anagrams_map[s_a_i])) { return; }
-                /** Take out all the characters in matched that do not contain in our anagram */
-                let keep = Utils.keepCharacterInString(_anagrams_map[s_a_i])(anagram);
-                /** Check if anagram has already been added. */
-                if (other.indexOf(keep) !== -1) { return; }
-                /** Success: Add anagram */
-                other += keep + ' '; 
-                return;
+           
+            if ( match === sorted_anagram ) {
+                anagram_string += _anagrams_map[s_a_i]  + ' ';
             }
         })
-        /** Return the anagram list of Anagram */
-        return other;
+        /** Return the anagram list of anagrams */
+        return anagram_string;
     })
 
     const _time = Date.now() - _start;
