@@ -11,7 +11,6 @@ const Utils = {
      * Remove all that is empty string
      * String => Array<String>
      */ 
-    stringToArray: string => typeof string === 'string' ? string.split(MyRegExp.newWord) : [],
+    stringToArray: string => string && typeof string === 'string' ? string.split(MyRegExp.newWord) : [],
     sortString: string => string.split('').sort().join('')
 }
-
