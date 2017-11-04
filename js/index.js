@@ -1,12 +1,12 @@
 
 const createAnagramsFromIdOfInput = inputId => {
+    // Just benchmarking this
+    const _start = Date.now();
     /** Sorting all the data in different way to handle them better */
     /** todo: Could improve read access by casting to string and sorting at the same time. Will reduce time ~Half  */
     const _anagrams_map = Utils.stringToArray( document.getElementById(inputId).value );
     /** todo: Could sort array after alphabetical order and stop when first character do not match. */
     const _anagrams_string_sorted_map = _anagrams_map.map(Utils.sortString);
-    // Just benchmarking this
-    const _start = Date.now();
 
     const _anagrams = _anagrams_map.map((anagram, a_i) => {
         if ( anagram.length === 1 ) { return; }
@@ -24,7 +24,7 @@ const createAnagramsFromIdOfInput = inputId => {
         return anagram_string;
     })
 
-    // Around 40ms on my comp. 1140 words
+    // Around 45ms on my comp. 1139 words
     const _time = Date.now() - _start;
     console.log('Used ms, s', _time, _time / 1000);
     console.log('Anagrams Map', _anagrams_map);
