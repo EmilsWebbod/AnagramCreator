@@ -3,34 +3,38 @@ const createAnagramsFromIdOfInput = inputId => {
     // Just benchmarking this
     const _start = Date.now();
     /** Sorting all the data in different way to handle them better */
-    /** todo: Could improve read access by casting to string and sorting at the same time. Will reduce time ~Half  */
+    /** todo: Could improve read access by casting to string and sorting at the same time. */
     const _anagrams_map = Utils.stringToArray( document.getElementById(inputId).value );
-    /** todo: Could sort array after alphabetical order and stop when first character do not match. */
-    const _anagrams_string_sorted_map = _anagrams_map.map(Utils.sortString);
+    /** Sorting strings in Anagram list and saving index */
+    const _anagrams_string_sorted_map = _anagrams_map.map((x, i) => [i, Utils.sortString(x)]);
+    /** List of anagram sorted. saved old index in [0] and storted anagram as [1] */
+    const _anagrams_sorted_map = _anagrams_string_sorted_map.sort(Utils.sortArrayByIndexOfArray(1));
+    /** Our list of matcing anagrams. Matching index to _anagrams_map */
+    const _anagrams = Array(_anagrams_map.length).fill('');
+    
+    console.log('Data Sorted', Date.now() - _start);
+    
+    /** 
+     * Simply loop through Sorted anagrams and check the next index. If match add as anagram and mirror
+     * Keep checking until no match.
+     */
+    for(let i = 0; i < _anagrams_sorted_map.length-1; i++) {
+        let shift = i + 1;
+        while (_anagrams_sorted_map[i][1] === _anagrams_sorted_map[shift][1]) {
+            _anagrams[_anagrams_sorted_map[i][0]] += _anagrams_map[_anagrams_sorted_map[shift][0]] + ' ';
+            _anagrams[_anagrams_sorted_map[shift][0]] += _anagrams_map[_anagrams_sorted_map[i][0]] + ' ';
+            shift++; 
+        }
+    }
 
-    const _anagrams = _anagrams_map.map((anagram, a_i) => {
-        if ( anagram.length === 1 ) { return; }
-        let anagram_string = '';
-        const match = _anagrams_string_sorted_map[a_i];
-        _anagrams_string_sorted_map.forEach((sorted_anagram, s_a_i) => {
-            // If the same anagram. No use to check if anagram of itself
-            if (s_a_i === a_i) { return; }
-           
-            if ( match === sorted_anagram ) {
-                anagram_string += _anagrams_map[s_a_i]  + ' ';
-            }
-        })
-        /** Return the anagram list of anagrams */
-        return anagram_string;
-    })
-
-    // Around 45ms on my comp. 1139 words
+    // Around 10ms on my comp. 1139 words
     const _time = Date.now() - _start;
     console.log('Used ms, s', _time, _time / 1000);
-    console.log('Anagrams Map', _anagrams_map);
-    console.log('Anagrams Match', _anagrams);
-    console.log('Anagrams Sorted', _anagrams_string_sorted_map);
 
-    document.getElementById('anagramList').innerText = _anagrams_map.join('\n');
-    document.getElementById('anagramListMatch').innerText = _anagrams.join('\n');
+    document.getElementById('anagramList').innerHTML = 
+        `<tr><th>Anagram</th><th>Matching Anagrams</th>` + _anagrams_map.map((x, i) =>
+        `<tr>
+            <td>${x}</td>
+            <td>${_anagrams[i]}</td>
+        </tr>` ).join('');
 }

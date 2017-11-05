@@ -12,5 +12,6 @@ const Utils = {
      * String => Array<String>
      */ 
     stringToArray: string => string && typeof string === 'string' ? string.split(MyRegExp.newWord) : [],
-    sortString: string => string.split('').sort().join('')
+    sortString: string => string.split('').sort().join(''),
+    sortArrayByIndexOfArray: i => (a, b) => a[i].localeCompare(b[i])
 }
