@@ -27,7 +27,7 @@ const createAnagramsFromIdOfInput = inputId => {
         }
     }
 
-    // Around 10ms on my comp. 1139 words
+    // Around 15ms on my comp. 1139 words
     const _time = Date.now() - _start;
     console.log('Used ms, s', _time, _time / 1000);
 
